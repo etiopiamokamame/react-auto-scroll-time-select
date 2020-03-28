@@ -1,0 +1,35 @@
+{
+  "name": "react-auto-scroll-time-select",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./types/react-auto-scroll-time-select/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "etiopiamokamame",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/etiopiamokamame/react-auto-scroll-time-select.git"
+  },
+  "keywords": [
+    "react",
+    "time",
+    "select"
+  ],
+  "bugs": {
+    "url": "https://github.com/etiopiamokamame/react-auto-scroll-time-select/issues"
+  },
+  "homepage": "https://github.com/etiopiamokamame/react-auto-scroll-time-select#readme",
+  "description": "",
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.25",
+    "@types/react-dom": "^16.9.5",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3"
+  }
+}
