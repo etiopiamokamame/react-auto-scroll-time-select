@@ -26,13 +26,12 @@
   },
   "homepage": "https://github.com/etiopiamokamame/react-auto-scroll-time-select#readme",
   "description": "",
-  "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
-  },
   "devDependencies": {
     "@types/react": "^16.9.25",
     "@types/react-dom": "^16.9.5",
+    "emotion": "^10.0.27",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3"
   }

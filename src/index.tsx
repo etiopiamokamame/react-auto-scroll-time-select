@@ -1,13 +1,8 @@
 import React from "react";
-import Test from "./Test";
+import Select from "./components/molecules/Select";
 
 const App = () => {
-  return (
-    <>
-      <h1>App</h1>
-      <Test />
-    </>
-  );
+  return <Select />;
 };
 
 export default App;
