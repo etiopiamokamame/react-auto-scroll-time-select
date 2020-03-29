@@ -1,23 +1,43 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { css } from "emotion";
+import SelectContext from "../../../contexts/Select";
+import { OptionType } from "../../../";
 
 interface IProps {
-  children: ReactNode;
+  option: OptionType;
+  index: number;
 }
 
-const OptionMenu = (props: IProps) => {
+const OptionMenu = ({ option: { label, value }, index }: IProps) => {
   return (
-    <div
-      className={css({
-        color: "#3c4043",
-        padding: "0 15px",
-        height: 40,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      })}
-      {...props}
-    />
+    <SelectContext.Consumer>
+      {({ onInputChange, onChange, focusOptionMenuIndex }) => (
+        <div
+          onMouseDown={() => {
+            onInputChange(value);
+            if (onChange) {
+              onChange(value);
+            }
+          }}
+          className={css({
+            color: "#3c4043",
+            padding: "0 15px",
+            height: 40,
+            display: "flex",
+            alignItems: "center",
+            cursor: "pointer",
+            fontSize: "1rem",
+            backgroundColor:
+              index == focusOptionMenuIndex ? "#f1f3f4" : "inherit",
+            "&:hover": {
+              backgroundColor: "#f1f3f4",
+            },
+          })}
+        >
+          {label}
+        </div>
+      )}
+    </SelectContext.Consumer>
   );
 };
 

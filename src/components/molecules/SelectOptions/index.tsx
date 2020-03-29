@@ -1,68 +1,79 @@
-import React, { Component } from "react";
+import React, { RefObject, Component } from "react";
 import { css } from "emotion";
 import { Scrollbars } from "react-custom-scrollbars";
 import SelectContext from "../../../contexts/Select";
 import OptionMenu from "../../atoms/OptionMenu";
+import { OptionType, InputValueType } from "../../../";
 
 interface IProps {
-  span: number;
+  menuOpen: boolean;
+  inputValue: string | undefined | null;
+  inputFormRef: RefObject<HTMLInputElement>;
+  scrollbarsRef: RefObject<Scrollbars>;
+  focusOptionMenuIndex: number;
+  options: OptionType[];
+  filterOption: (option: OptionType, input: InputValueType) => void;
+  changeFocusOptionMenuIndex: (i: number) => void;
 }
 
-type OptionType = {
-  label: string;
-  value: string;
-};
-
 class SelectOptions extends Component<IProps> {
-  shouldComponentUpdate(nextProps: IProps) {
-    return nextProps.span !== this.props.span;
+  shouldComponentUpdate(prevProps: IProps) {
+    return (
+      prevProps.menuOpen !== this.props.menuOpen ||
+      prevProps.focusOptionMenuIndex !== this.props.focusOptionMenuIndex
+    );
+  }
+
+  componentDidUpdate(prevProps: IProps) {
+    if (!prevProps.menuOpen && this.props.menuOpen) {
+      const index = this.props.options.findIndex((option) =>
+        this.props.filterOption(option, this.props.inputValue)
+      );
+      this.props.changeFocusOptionMenuIndex(index >= 0 ? index : 0);
+    }
+
+    if (this.props.menuOpen && this.props.scrollbarsRef.current) {
+      const optionMenuHeight: number =
+        this.props.scrollbarsRef.current.getValues().scrollHeight /
+        this.props.options.length;
+      this.props.scrollbarsRef.current.scrollTop(
+        (this.props.focusOptionMenuIndex - 2) * optionMenuHeight
+      );
+    }
   }
 
   render() {
-    const candidates = Array.from({ length: 33 })
-      .map((_, h) => {
-        return Array.from({ length: 60 }).map((_, m) => m + h * 60);
-      })
-      .flat()
-      .filter(n => n % this.props.span === 0);
-
-    const format = (num: number) => ("0" + num).slice(-2);
-
-    const options: OptionType[] = candidates.map(candidate => {
-      const h = Math.floor(candidate / 60);
-      const m = candidate - h * 60;
-      const formatTime = `${format(h)}:${format(m)}`;
-
-      return {
-        label: formatTime,
-        value: formatTime
-      };
-    });
-
     return (
       <SelectContext.Consumer>
-        {({ offsetHeight }) => (
-          <div
-            className={css({
-              margin: "8px 0",
-              position: "absolute",
-              top: offsetHeight,
-              height: 200,
-              width: "100%",
-              overflowY: "scroll",
-              background: "#fff",
-              borderRadius: 2,
-              boxShadow:
-                "0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.2)"
-            })}
-          >
-            <Scrollbars>
-              {options.map(({ label }, i) => (
-                <OptionMenu key={i}>{label}</OptionMenu>
-              ))}
-            </Scrollbars>
-          </div>
-        )}
+        {({ menuOpen, offsetHeight, options }) => {
+          if (!menuOpen) {
+            return <></>;
+          }
+
+          return (
+            <div
+              className={css({
+                margin: "4px 0",
+                position: "absolute",
+                top: offsetHeight,
+                height: 200,
+                width: "100%",
+                overflowY: "scroll",
+                background: "#fff",
+                borderRadius: 2,
+                zIndex: 1,
+                boxShadow:
+                  "0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.2)",
+              })}
+            >
+              <Scrollbars ref={this.props.scrollbarsRef}>
+                {options.map((option, i) => (
+                  <OptionMenu key={i} option={option} index={i} />
+                ))}
+              </Scrollbars>
+            </div>
+          );
+        }}
       </SelectContext.Consumer>
     );
   }

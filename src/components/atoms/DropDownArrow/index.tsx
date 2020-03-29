@@ -1,15 +1,16 @@
 import React from "react";
 import { css } from "emotion";
-import InputFormContext from "../../../contexts/InputForm";
+import SelectContext from "../../../contexts/Select";
 
 const DropDownArrow = () => {
   return (
-    <InputFormContext.Consumer>
+    <SelectContext.Consumer>
       {({ inputFormRef }) => (
         <div
           onClick={() => {
-            inputFormRef.current?.focus();
-            inputFormRef.current?.select();
+            if (inputFormRef.current) {
+              inputFormRef.current.focus();
+            }
           }}
           className={css({
             width: 25,
@@ -18,8 +19,8 @@ const DropDownArrow = () => {
             paddingRight: 5,
             cursor: "pointer",
             "&:hover > div": {
-              borderColor: "rgba(0,0,0,.5) transparent transparent"
-            }
+              borderColor: "rgba(0,0,0,.5) transparent transparent",
+            },
           })}
         >
           <div
@@ -29,12 +30,12 @@ const DropDownArrow = () => {
               borderWidth: "5px 5px 2.5px",
               margin: "0 auto",
               width: 0,
-              display: "inline-block"
+              display: "inline-block",
             })}
           />
         </div>
       )}
-    </InputFormContext.Consumer>
+    </SelectContext.Consumer>
   );
 };
 

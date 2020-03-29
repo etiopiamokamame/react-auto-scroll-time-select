@@ -1,13 +1,10 @@
-import React, { createRef } from "react";
+import React from "react";
 import { css } from "emotion";
 import ClearValue from "../../atoms/ClearValue";
 import DropDownArrow from "../../atoms/DropDownArrow";
 import InputForm from "../../atoms/InputForm";
-import InputFormContext from "../../../contexts/InputForm";
 
 const Control = () => {
-  const InputFormRef = createRef<HTMLInputElement>();
-
   return (
     <div
       className={css({
@@ -23,11 +20,9 @@ const Control = () => {
         display: "table"
       })}
     >
-      <InputFormContext.Provider value={{ inputFormRef: InputFormRef }}>
-        <InputForm />
-        <ClearValue />
-        <DropDownArrow />
-      </InputFormContext.Provider>
+      <InputForm />
+      <ClearValue />
+      <DropDownArrow />
     </div>
   );
 };
