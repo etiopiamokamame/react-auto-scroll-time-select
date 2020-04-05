@@ -4,19 +4,19 @@ import { OptionType, InputValueType } from "../../";
 
 interface IValueType {
   clearInputValue: () => void;
-  onInputChange: (inputValue: string | undefined | null) => void;
+  onInputChange: (inputValue: InputValueType) => void;
   onFocus: () => void;
   onBlur: () => void;
-  onChange?: (value: string | undefined | null) => void;
+  onChange?: (option: OptionType | null) => void;
   inputFormRef: RefObject<HTMLInputElement>;
   scrollbarsRef: RefObject<Scrollbars>;
-  inputValue: string | undefined | null;
+  inputValue: InputValueType;
   menuOpen: boolean;
   offsetHeight: number;
   options: OptionType[];
   focusOptionMenuIndex: number;
   changeFocusOptionMenuIndex: (i: number) => void;
-  filterOption: (option: OptionType, input: InputValueType) => void;
+  findOption: (option: OptionType, input: InputValueType) => void;
 }
 
 const Select = createContext<IValueType>({
@@ -33,7 +33,7 @@ const Select = createContext<IValueType>({
   options: [],
   focusOptionMenuIndex: 0,
   changeFocusOptionMenuIndex: () => {},
-  filterOption: () => false,
+  findOption: () => false,
 });
 
 export default Select;

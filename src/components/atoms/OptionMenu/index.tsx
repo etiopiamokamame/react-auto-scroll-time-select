@@ -11,12 +11,15 @@ interface IProps {
 const OptionMenu = ({ option: { label, value }, index }: IProps) => {
   return (
     <SelectContext.Consumer>
-      {({ onInputChange, onChange, focusOptionMenuIndex }) => (
+      {({ onInputChange, onChange, focusOptionMenuIndex, options }) => (
         <div
           onMouseDown={() => {
             onInputChange(value);
             if (onChange) {
-              onChange(value);
+              const option = options.find(
+                ({ value: optVal }) => optVal === value
+              );
+              onChange(option || options[0]);
             }
           }}
           className={css({
