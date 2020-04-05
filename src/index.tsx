@@ -18,6 +18,7 @@ export interface IProps {
   value?: OptionType | null;
   onChange?: (option: OptionType | null) => void;
   findOption?: (option: OptionType, input: InputValueType) => void;
+  isClearable?: boolean;
 }
 
 interface IState {
@@ -27,6 +28,7 @@ interface IState {
   menuOpen: boolean;
   focusOptionMenuIndex: number;
   findOption: (option: OptionType, input: InputValueType) => void;
+  isClearable: boolean;
 }
 
 class Select extends Component<IProps, IState> {
@@ -54,6 +56,7 @@ class Select extends Component<IProps, IState> {
             return value.indexOf(inputValue) > -1;
           }
         }),
+      isClearable: props.isClearable === undefined ? true : props.isClearable,
     };
   }
 
@@ -111,6 +114,7 @@ class Select extends Component<IProps, IState> {
             changeFocusOptionMenuIndex: (i: number) =>
               this.setState({ focusOptionMenuIndex: i }),
             findOption: this.state.findOption,
+            isClearable: this.state.isClearable,
           }}
         >
           <Control />
