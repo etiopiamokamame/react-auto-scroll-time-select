@@ -69,7 +69,7 @@ class SelectOptions extends Component<IProps> {
               className={css(
                 selectOptions
                   ? selectOptions(selectOptionsBaseStyle)
-                  : selectOptions
+                  : selectOptionsBaseStyle
               )}
             >
               <Scrollbars ref={this.props.scrollbarsRef}>
