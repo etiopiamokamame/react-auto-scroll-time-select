@@ -45,26 +45,32 @@ class SelectOptions extends Component<IProps> {
   render() {
     return (
       <SelectContext.Consumer>
-        {({ menuOpen, offsetHeight, options }) => {
+        {({ menuOpen, offsetHeight, options, styles: { selectOptions } }) => {
           if (!menuOpen) {
             return <></>;
           }
 
+          const selectOptionsBaseStyle = {
+            margin: "4px 0",
+            position: "absolute",
+            top: offsetHeight,
+            height: 200,
+            width: "100%",
+            overflowY: "scroll",
+            background: "#fff",
+            borderRadius: 2,
+            zIndex: 1,
+            boxShadow:
+              "0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.2)",
+          };
+
           return (
             <div
-              className={css({
-                margin: "4px 0",
-                position: "absolute",
-                top: offsetHeight,
-                height: 200,
-                width: "100%",
-                overflowY: "scroll",
-                background: "#fff",
-                borderRadius: 2,
-                zIndex: 1,
-                boxShadow:
-                  "0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.2)",
-              })}
+              className={css(
+                selectOptions
+                  ? selectOptions(selectOptionsBaseStyle)
+                  : selectOptions
+              )}
             >
               <Scrollbars ref={this.props.scrollbarsRef}>
                 {options.map((option, i) => (

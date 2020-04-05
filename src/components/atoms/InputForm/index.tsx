@@ -18,74 +18,81 @@ const InputForm = () => {
           focusOptionMenuIndex,
           changeFocusOptionMenuIndex,
           findOption,
-        }) => (
-          <input
-            type="text"
-            value={inputValue || ""}
-            onChange={(e) => onInputChange(e.target.value)}
-            maxLength={5}
-            onFocus={onFocus}
-            onBlur={() => {
-              if (onChange) {
-                if (!inputValue) {
-                  onChange(null);
+          styles: { inputForm },
+        }) => {
+          const inputFormBaseStyle = {
+            height: "calc(1.5em + .75rem + 2px)",
+            border: 0,
+            paddingLeft: 10,
+            width: 56,
+            outline: "none",
+            lineHeight: 1.5,
+            fontSize: "1rem",
+          };
+
+          return (
+            <input
+              type="text"
+              value={inputValue || ""}
+              onChange={(e) => onInputChange(e.target.value)}
+              maxLength={5}
+              onFocus={onFocus}
+              onBlur={() => {
+                if (onChange) {
+                  if (!inputValue) {
+                    onChange(null);
+                  }
                 }
-              }
 
-              onBlur();
-            }}
-            onKeyUp={({ key }: KeyboardEvent<HTMLInputElement>) => {
-              switch (key) {
-                case "Escape":
-                  if (menuOpen) {
+                onBlur();
+              }}
+              onKeyUp={({ key }: KeyboardEvent<HTMLInputElement>) => {
+                switch (key) {
+                  case "Escape":
+                    if (menuOpen) {
+                      onBlur();
+                    }
+                  case "Enter":
+                    if (onChange) {
+                      onChange(options[focusOptionMenuIndex]);
+                    }
+                    onInputChange(options[focusOptionMenuIndex].label);
                     onBlur();
-                  }
-                case "Enter":
-                  if (onChange) {
-                    onChange(options[focusOptionMenuIndex]);
-                  }
-                  onInputChange(options[focusOptionMenuIndex].label);
-                  onBlur();
-                  break;
-                case "ArrowDown":
-                  if (options.length - 1 > focusOptionMenuIndex) {
-                    changeFocusOptionMenuIndex(focusOptionMenuIndex + 1);
-                    onInputChange(options[focusOptionMenuIndex + 1].label);
-                  }
+                    break;
+                  case "ArrowDown":
+                    if (options.length - 1 > focusOptionMenuIndex) {
+                      changeFocusOptionMenuIndex(focusOptionMenuIndex + 1);
+                      onInputChange(options[focusOptionMenuIndex + 1].label);
+                    }
 
-                  break;
-                case "ArrowUp":
-                  if (focusOptionMenuIndex !== 0) {
-                    changeFocusOptionMenuIndex(focusOptionMenuIndex - 1);
-                    onInputChange(options[focusOptionMenuIndex - 1].label);
-                  }
+                    break;
+                  case "ArrowUp":
+                    if (focusOptionMenuIndex !== 0) {
+                      changeFocusOptionMenuIndex(focusOptionMenuIndex - 1);
+                      onInputChange(options[focusOptionMenuIndex - 1].label);
+                    }
 
-                  break;
-                default:
-                  const index = options.findIndex((options) =>
-                    findOption(options, inputValue)
-                  );
-                  changeFocusOptionMenuIndex(index >= 0 ? index : 0);
+                    break;
+                  default:
+                    const index = options.findIndex((options) =>
+                      findOption(options, inputValue)
+                    );
+                    changeFocusOptionMenuIndex(index >= 0 ? index : 0);
 
-                  break;
-              }
+                    break;
+                }
 
-              if (key !== "Enter" && !menuOpen) {
-                onFocus();
-              }
-            }}
-            ref={inputFormRef}
-            className={css({
-              height: "calc(1.5em + .75rem + 2px)",
-              border: 0,
-              paddingLeft: 10,
-              width: 56,
-              outline: "none",
-              lineHeight: 1.5,
-              fontSize: "1rem",
-            })}
-          />
-        )}
+                if (key !== "Enter" && !menuOpen) {
+                  onFocus();
+                }
+              }}
+              ref={inputFormRef}
+              className={css(
+                inputForm ? inputForm(inputFormBaseStyle) : inputForm
+              )}
+            />
+          );
+        }}
       </Select.Consumer>
     </div>
   );

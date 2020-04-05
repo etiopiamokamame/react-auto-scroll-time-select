@@ -11,6 +11,18 @@ export type OptionType = {
 };
 
 export type InputValueType = string | null | undefined;
+export type StyleConfigType = { [key: string]: any };
+type StyleFn = (config: StyleConfigType) => {};
+export type StylesType = {
+  select?: StyleFn;
+  control?: StyleFn;
+  inputForm?: StyleFn;
+  clearValue?: StyleFn;
+  dropDownArrowWrapper?: StyleFn;
+  dropDownArrowItem?: StyleFn;
+  selectOptions?: StyleFn;
+  optionMenu?: StyleFn;
+};
 
 export interface IProps {
   span?: number;
@@ -19,6 +31,7 @@ export interface IProps {
   onChange?: (option: OptionType | null) => void;
   findOption?: (option: OptionType, input: InputValueType) => void;
   isClearable?: boolean;
+  styles?: StylesType;
 }
 
 interface IState {
@@ -29,6 +42,7 @@ interface IState {
   focusOptionMenuIndex: number;
   findOption: (option: OptionType, input: InputValueType) => void;
   isClearable: boolean;
+  styles: StylesType;
 }
 
 class Select extends Component<IProps, IState> {
@@ -57,6 +71,7 @@ class Select extends Component<IProps, IState> {
           }
         }),
       isClearable: props.isClearable === undefined ? true : props.isClearable,
+      styles: props.styles || {},
     };
   }
 
@@ -87,12 +102,18 @@ class Select extends Component<IProps, IState> {
       };
     });
 
+    const selectBaseStyle = {
+      position: "relative",
+      "*": { boxSizing: "border-box" },
+    };
+
     return (
       <div
-        className={css({
-          position: "relative",
-          "*": { boxSizing: "border-box" },
-        })}
+        className={css(
+          this.state.styles.select
+            ? this.state.styles.select(selectBaseStyle)
+            : selectBaseStyle
+        )}
         ref={this.selectControlRef}
       >
         <SelectContext.Provider
@@ -115,6 +136,7 @@ class Select extends Component<IProps, IState> {
               this.setState({ focusOptionMenuIndex: i }),
             findOption: this.state.findOption,
             isClearable: this.state.isClearable,
+            styles: this.state.styles,
           }}
         >
           <Control />

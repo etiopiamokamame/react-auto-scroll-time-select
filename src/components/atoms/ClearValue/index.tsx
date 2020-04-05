@@ -10,10 +10,21 @@ const ClearValue = () => {
         inputFormRef,
         changeFocusOptionMenuIndex,
         isClearable,
+        styles: { clearValue },
       }) => {
         if (!isClearable) {
           return <></>;
         }
+
+        const clearValueBaseStyle = {
+          width: 17,
+          display: "table-cell",
+          verticalAlign: "middle",
+          cursor: "pointer",
+          "&:hover": {
+            color: "rgba(0,0,0,.5)",
+          },
+        };
 
         return (
           <div
@@ -25,15 +36,9 @@ const ClearValue = () => {
                 inputFormRef.current.select();
               }
             }}
-            className={css({
-              width: 17,
-              display: "table-cell",
-              verticalAlign: "middle",
-              cursor: "pointer",
-              "&:hover": {
-                color: "rgba(0,0,0,.5)",
-              },
-            })}
+            className={css(
+              clearValue ? clearValue(clearValueBaseStyle) : clearValueBaseStyle
+            )}
           >
             ×
           </div>
