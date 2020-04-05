@@ -39,7 +39,7 @@ const DropDownArrow = () => {
             className={css(
               dropDownArrowWrapper
                 ? dropDownArrowWrapper(dropDownArrowWrapperBaseStyle)
-                : dropDownArrowWrapper
+                : dropDownArrowWrapperBaseStyle
             )}
           >
             <div

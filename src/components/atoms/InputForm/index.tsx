@@ -88,7 +88,7 @@ const InputForm = () => {
               }}
               ref={inputFormRef}
               className={css(
-                inputForm ? inputForm(inputFormBaseStyle) : inputForm
+                inputForm ? inputForm(inputFormBaseStyle) : inputFormBaseStyle
               )}
             />
           );
