@@ -17,6 +17,7 @@ interface IValueType {
   focusOptionMenuIndex: number;
   changeFocusOptionMenuIndex: (i: number) => void;
   findOption: (option: OptionType, input: InputValueType) => void;
+  isClearable: boolean;
 }
 
 const Select = createContext<IValueType>({
@@ -34,6 +35,7 @@ const Select = createContext<IValueType>({
   focusOptionMenuIndex: 0,
   changeFocusOptionMenuIndex: () => {},
   findOption: () => false,
+  isClearable: true,
 });
 
 export default Select;
