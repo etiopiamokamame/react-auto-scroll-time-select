@@ -12,7 +12,7 @@ interface IProps {
   scrollbarsRef: RefObject<Scrollbars>;
   focusOptionMenuIndex: number;
   options: OptionType[];
-  filterOption: (option: OptionType, input: InputValueType) => void;
+  findOption: (option: OptionType, input: InputValueType) => void;
   changeFocusOptionMenuIndex: (i: number) => void;
 }
 
@@ -27,7 +27,7 @@ class SelectOptions extends Component<IProps> {
   componentDidUpdate(prevProps: IProps) {
     if (!prevProps.menuOpen && this.props.menuOpen) {
       const index = this.props.options.findIndex((option) =>
-        this.props.filterOption(option, this.props.inputValue)
+        this.props.findOption(option, this.props.inputValue)
       );
       this.props.changeFocusOptionMenuIndex(index >= 0 ? index : 0);
     }

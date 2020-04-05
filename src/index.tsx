@@ -15,9 +15,9 @@ export type InputValueType = string | null | undefined;
 export interface IProps {
   span?: number;
   hourLimit?: number;
-  value?: OptionType;
-  onChange?: (value: string | undefined | null) => void;
-  filterOption?: (option: OptionType, input: InputValueType) => void;
+  value?: OptionType | null;
+  onChange?: (option: OptionType | null) => void;
+  findOption?: (option: OptionType, input: InputValueType) => void;
 }
 
 interface IState {
@@ -26,7 +26,7 @@ interface IState {
   inputValue: string | undefined | null;
   menuOpen: boolean;
   focusOptionMenuIndex: number;
-  filterOption: (option: OptionType, input: InputValueType) => void;
+  findOption: (option: OptionType, input: InputValueType) => void;
 }
 
 class Select extends Component<IProps, IState> {
@@ -43,8 +43,8 @@ class Select extends Component<IProps, IState> {
       inputValue: props.value ? props.value.value : "",
       menuOpen: false,
       focusOptionMenuIndex: 0,
-      filterOption:
-        props.filterOption ||
+      findOption:
+        props.findOption ||
         (({ value }: OptionType, input: InputValueType) => {
           let inputValue = input || "";
 
@@ -110,7 +110,7 @@ class Select extends Component<IProps, IState> {
             focusOptionMenuIndex: this.state.focusOptionMenuIndex,
             changeFocusOptionMenuIndex: (i: number) =>
               this.setState({ focusOptionMenuIndex: i }),
-            filterOption: this.state.filterOption,
+            findOption: this.state.findOption,
           }}
         >
           <Control />
@@ -121,7 +121,7 @@ class Select extends Component<IProps, IState> {
             inputFormRef={this.inputFormRef}
             focusOptionMenuIndex={this.state.focusOptionMenuIndex}
             options={options}
-            filterOption={this.state.filterOption}
+            findOption={this.state.findOption}
             changeFocusOptionMenuIndex={(i: number) =>
               this.setState({ focusOptionMenuIndex: i })
             }

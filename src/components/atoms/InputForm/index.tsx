@@ -17,7 +17,7 @@ const InputForm = () => {
           options,
           focusOptionMenuIndex,
           changeFocusOptionMenuIndex,
-          filterOption,
+          findOption,
         }) => (
           <input
             type="text"
@@ -25,7 +25,15 @@ const InputForm = () => {
             onChange={(e) => onInputChange(e.target.value)}
             maxLength={5}
             onFocus={onFocus}
-            onBlur={onBlur}
+            onBlur={() => {
+              if (onChange) {
+                if (!inputValue) {
+                  onChange(null);
+                }
+              }
+
+              onBlur();
+            }}
             onKeyUp={({ key }: KeyboardEvent<HTMLInputElement>) => {
               switch (key) {
                 case "Escape":
@@ -34,7 +42,7 @@ const InputForm = () => {
                   }
                 case "Enter":
                   if (onChange) {
-                    onChange(options[focusOptionMenuIndex].label);
+                    onChange(options[focusOptionMenuIndex]);
                   }
                   onInputChange(options[focusOptionMenuIndex].label);
                   onBlur();
@@ -55,7 +63,7 @@ const InputForm = () => {
                   break;
                 default:
                   const index = options.findIndex((options) =>
-                    filterOption(options, inputValue)
+                    findOption(options, inputValue)
                   );
                   changeFocusOptionMenuIndex(index >= 0 ? index : 0);
 
