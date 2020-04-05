@@ -1,6 +1,6 @@
 import { createContext, createRef, RefObject } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
-import { OptionType, InputValueType } from "../../";
+import { OptionType, InputValueType, StylesType } from "../../";
 
 interface IValueType {
   clearInputValue: () => void;
@@ -18,6 +18,7 @@ interface IValueType {
   changeFocusOptionMenuIndex: (i: number) => void;
   findOption: (option: OptionType, input: InputValueType) => void;
   isClearable: boolean;
+  styles: StylesType;
 }
 
 const Select = createContext<IValueType>({
@@ -36,6 +37,7 @@ const Select = createContext<IValueType>({
   changeFocusOptionMenuIndex: () => {},
   findOption: () => false,
   isClearable: true,
+  styles: {},
 });
 
 export default Select;
