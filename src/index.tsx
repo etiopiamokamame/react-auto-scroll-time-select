@@ -11,13 +11,27 @@ export type OptionType = {
 };
 
 export type InputValueType = string | null | undefined;
+export type StyleConfigType = { [key: string]: any };
+type StyleFn = (config: StyleConfigType) => {};
+export type StylesType = {
+  select?: StyleFn;
+  control?: StyleFn;
+  inputForm?: StyleFn;
+  clearValue?: StyleFn;
+  dropDownArrowWrapper?: StyleFn;
+  dropDownArrowItem?: StyleFn;
+  selectOptions?: StyleFn;
+  optionMenu?: StyleFn;
+};
 
 export interface IProps {
   span?: number;
   hourLimit?: number;
-  value?: OptionType;
-  onChange?: (value: string | undefined | null) => void;
-  filterOption?: (option: OptionType, input: InputValueType) => void;
+  value?: OptionType | null;
+  onChange?: (option: OptionType | null) => void;
+  findOption?: (option: OptionType, input: InputValueType) => void;
+  isClearable?: boolean;
+  styles?: StylesType;
 }
 
 interface IState {
@@ -26,7 +40,9 @@ interface IState {
   inputValue: string | undefined | null;
   menuOpen: boolean;
   focusOptionMenuIndex: number;
-  filterOption: (option: OptionType, input: InputValueType) => void;
+  findOption: (option: OptionType, input: InputValueType) => void;
+  isClearable: boolean;
+  styles: StylesType;
 }
 
 class Select extends Component<IProps, IState> {
@@ -43,8 +59,8 @@ class Select extends Component<IProps, IState> {
       inputValue: props.value ? props.value.value : "",
       menuOpen: false,
       focusOptionMenuIndex: 0,
-      filterOption:
-        props.filterOption ||
+      findOption:
+        props.findOption ||
         (({ value }: OptionType, input: InputValueType) => {
           let inputValue = input || "";
 
@@ -54,6 +70,8 @@ class Select extends Component<IProps, IState> {
             return value.indexOf(inputValue) > -1;
           }
         }),
+      isClearable: props.isClearable === undefined ? true : props.isClearable,
+      styles: props.styles || {},
     };
   }
 
@@ -84,12 +102,18 @@ class Select extends Component<IProps, IState> {
       };
     });
 
+    const selectBaseStyle = {
+      position: "relative",
+      "*": { boxSizing: "border-box" },
+    };
+
     return (
       <div
-        className={css({
-          position: "relative",
-          "*": { boxSizing: "border-box" },
-        })}
+        className={css(
+          this.state.styles.select
+            ? this.state.styles.select(selectBaseStyle)
+            : selectBaseStyle
+        )}
         ref={this.selectControlRef}
       >
         <SelectContext.Provider
@@ -110,7 +134,9 @@ class Select extends Component<IProps, IState> {
             focusOptionMenuIndex: this.state.focusOptionMenuIndex,
             changeFocusOptionMenuIndex: (i: number) =>
               this.setState({ focusOptionMenuIndex: i }),
-            filterOption: this.state.filterOption,
+            findOption: this.state.findOption,
+            isClearable: this.state.isClearable,
+            styles: this.state.styles,
           }}
         >
           <Control />
@@ -121,7 +147,7 @@ class Select extends Component<IProps, IState> {
             inputFormRef={this.inputFormRef}
             focusOptionMenuIndex={this.state.focusOptionMenuIndex}
             options={options}
-            filterOption={this.state.filterOption}
+            findOption={this.state.findOption}
             changeFocusOptionMenuIndex={(i: number) =>
               this.setState({ focusOptionMenuIndex: i })
             }
