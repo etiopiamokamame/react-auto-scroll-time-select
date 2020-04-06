@@ -20,6 +20,8 @@ const Control = () => {
           overflow: "hidden",
           position: "relative",
           display: "table",
+          borderCollapse: "separate",
+          borderSpacing: 0,
         };
 
         return (
