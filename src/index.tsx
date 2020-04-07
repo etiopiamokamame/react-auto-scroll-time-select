@@ -75,6 +75,22 @@ class Select extends Component<IProps, IState> {
     };
   }
 
+  componentDidUpdate(prevProps: IProps) {
+    if (
+      prevProps.value !== this.props.value ||
+      prevProps.hourLimit !== this.props.hourLimit ||
+      prevProps.span !== this.props.span
+    ) {
+      this.setState({
+        inputValue: this.props.value
+          ? this.props.value.value
+          : this.state.inputValue,
+        hourLimit: this.props.hourLimit || this.state.hourLimit,
+        span: this.props.span || this.state.span,
+      });
+    }
+  }
+
   private format(num: number) {
     return ("0" + num).slice(-2);
   }
