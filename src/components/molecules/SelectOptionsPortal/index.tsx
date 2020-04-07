@@ -23,13 +23,19 @@ const SelectOptionsPortal = () => {
           return <></>;
         }
 
+        const {
+          left,
+          top,
+          width,
+        } = selectControlRef.current.getBoundingClientRect();
+
         return createPortal(
           <div
             className={css({
-              left: selectControlRef.current.offsetLeft,
+              left,
               position: "absolute",
-              top: selectControlRef.current.offsetTop,
-              width: selectControlRef.current.offsetWidth,
+              top,
+              width,
               zIndex: 1,
               boxSizing: "border-box",
             })}
