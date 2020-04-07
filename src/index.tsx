@@ -4,6 +4,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import SelectContext from "./contexts/Select";
 import Control from "./components/molecules/Control";
 import SelectOptions from "./components/molecules/SelectOptions";
+import SelectOptionsPortal from "./components/molecules/SelectOptionsPortal";
 
 export type OptionType = {
   label: string;
@@ -32,6 +33,7 @@ export interface IProps {
   findOption?: (option: OptionType, input: InputValueType) => void;
   isClearable?: boolean;
   styles?: StylesType;
+  menuPortalTarget?: HTMLElement;
 }
 
 interface IState {
@@ -141,6 +143,7 @@ class Select extends Component<IProps, IState> {
             onChange: this.props.onChange,
             inputValue: this.state.inputValue,
             menuOpen: this.state.menuOpen,
+            selectControlRef: this.selectControlRef,
             offsetHeight: this.selectControlRef.current
               ? this.selectControlRef.current.offsetHeight
               : 0,
@@ -153,21 +156,27 @@ class Select extends Component<IProps, IState> {
             findOption: this.state.findOption,
             isClearable: this.state.isClearable,
             styles: this.state.styles,
+            menuPortalTarget: this.props.menuPortalTarget,
           }}
         >
           <Control />
-          <SelectOptions
-            menuOpen={this.state.menuOpen}
-            inputValue={this.state.inputValue}
-            scrollbarsRef={this.scrollbarsRef}
-            inputFormRef={this.inputFormRef}
-            focusOptionMenuIndex={this.state.focusOptionMenuIndex}
-            options={options}
-            findOption={this.state.findOption}
-            changeFocusOptionMenuIndex={(i: number) =>
-              this.setState({ focusOptionMenuIndex: i })
-            }
-          />
+
+          {this.props.menuPortalTarget ? (
+            <SelectOptionsPortal />
+          ) : (
+            <SelectOptions
+              menuOpen={this.state.menuOpen}
+              inputValue={this.state.inputValue}
+              scrollbarsRef={this.scrollbarsRef}
+              inputFormRef={this.inputFormRef}
+              focusOptionMenuIndex={this.state.focusOptionMenuIndex}
+              options={options}
+              findOption={this.state.findOption}
+              changeFocusOptionMenuIndex={(i: number) =>
+                this.setState({ focusOptionMenuIndex: i })
+              }
+            />
+          )}
         </SelectContext.Provider>
       </div>
     );
