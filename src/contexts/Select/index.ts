@@ -8,6 +8,7 @@ interface IValueType {
   onFocus: () => void;
   onBlur: () => void;
   onChange?: (option: OptionType | null) => void;
+  selectControlRef: RefObject<HTMLElement>;
   inputFormRef: RefObject<HTMLInputElement>;
   scrollbarsRef: RefObject<Scrollbars>;
   inputValue: InputValueType;
@@ -19,6 +20,7 @@ interface IValueType {
   findOption: (option: OptionType, input: InputValueType) => void;
   isClearable: boolean;
   styles: StylesType;
+  menuPortalTarget: HTMLElement | undefined;
 }
 
 const Select = createContext<IValueType>({
@@ -27,6 +29,7 @@ const Select = createContext<IValueType>({
   onFocus: () => {},
   onBlur: () => {},
   onChange: () => {},
+  selectControlRef: createRef<HTMLElement>(),
   inputFormRef: createRef<HTMLInputElement>(),
   scrollbarsRef: createRef<Scrollbars>(),
   inputValue: null,
@@ -38,6 +41,7 @@ const Select = createContext<IValueType>({
   findOption: () => false,
   isClearable: true,
   styles: {},
+  menuPortalTarget: undefined,
 });
 
 export default Select;
