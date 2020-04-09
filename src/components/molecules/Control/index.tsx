@@ -22,6 +22,7 @@ const Control = () => {
           display: "table",
           borderCollapse: "separate",
           borderSpacing: 0,
+          width: "100%",
         };
 
         return (

@@ -36,7 +36,7 @@ import Select, { OptionType } from "react-auto-scroll-time-select";
 | onChange         |              | (option: OptionType &#124; null) => void;            | Select change event                                         |
 | findOption       |              | (option: OptionType, input: InputValueType) => void; | An event that finds options to scroll from input characters |
 | isClearable      | true         | boolean                                              | If true, display the button to clear                        |
-| styles           |              | { select, control, ... }                             | See [Custom Style](/#custom-styles)                         |
+| styles           |              | { select, control, ... }                             | See [Custom Style](#custom-styles)                          |
 | menuPortalTarget |              |                                                      | Element to add selection menu                               |
 
 ## Custom Styles

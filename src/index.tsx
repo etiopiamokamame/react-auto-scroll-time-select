@@ -67,7 +67,11 @@ class Select extends Component<IProps, IState> {
           let inputValue = input || "";
 
           if (inputValue.indexOf(":") < 0) {
-            return value.replace(":", "").indexOf(inputValue) > -1;
+            if (inputValue.length <= 2) {
+              return value.indexOf(inputValue + ":") > -1;
+            } else {
+              return value.replace(":", "").indexOf(inputValue) > -1;
+            }
           } else {
             return value.indexOf(inputValue) > -1;
           }
@@ -80,13 +84,15 @@ class Select extends Component<IProps, IState> {
   componentDidUpdate(prevProps: IProps) {
     if (
       prevProps.value !== this.props.value ||
+      (prevProps.value &&
+        this.props.value &&
+        (prevProps.value.label !== this.props.value.label ||
+          prevProps.value.value !== this.props.value.value)) ||
       prevProps.hourLimit !== this.props.hourLimit ||
       prevProps.span !== this.props.span
     ) {
       this.setState({
-        inputValue: this.props.value
-          ? this.props.value.value
-          : this.state.inputValue,
+        inputValue: this.props.value ? this.props.value.value : null,
         hourLimit: this.props.hourLimit || this.state.hourLimit,
         span: this.props.span || this.state.span,
       });

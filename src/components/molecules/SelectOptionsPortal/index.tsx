@@ -23,20 +23,36 @@ const SelectOptionsPortal = () => {
           return <></>;
         }
 
+        let overFrameMenuPosition = false;
+
         const {
           left,
           top,
           width,
+          bottom: selectControlBottom,
         } = selectControlRef.current.getBoundingClientRect();
+        let positionTop = top;
+
+        if (menuOpen && menuPortalTarget && inputFormRef.current) {
+          const scrollbarHeight = 200 + 8;
+          const {
+            bottom: menuPortalBottom,
+          } = menuPortalTarget.getBoundingClientRect();
+
+          if (menuPortalBottom < selectControlBottom + scrollbarHeight) {
+            positionTop -= scrollbarHeight;
+            overFrameMenuPosition = true;
+          }
+        }
 
         return createPortal(
           <div
             className={css({
               left,
               position: "absolute",
-              top,
+              top: positionTop,
               width,
-              zIndex: 1,
+              zIndex: 9999,
               boxSizing: "border-box",
             })}
           >
@@ -49,6 +65,7 @@ const SelectOptionsPortal = () => {
               options={options}
               findOption={findOption}
               changeFocusOptionMenuIndex={changeFocusOptionMenuIndex}
+              overFrameMenuPosition={overFrameMenuPosition}
             />
           </div>,
           menuPortalTarget
