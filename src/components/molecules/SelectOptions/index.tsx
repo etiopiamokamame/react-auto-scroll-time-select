@@ -14,6 +14,7 @@ interface IProps {
   options: OptionType[];
   findOption: (option: OptionType, input: InputValueType) => void;
   changeFocusOptionMenuIndex: (i: number) => void;
+  overFrameMenuPosition?: boolean;
 }
 
 class SelectOptions extends Component<IProps> {
@@ -50,11 +51,8 @@ class SelectOptions extends Component<IProps> {
             return <></>;
           }
 
-          const selectOptionsBaseStyle = {
-            margin: "4px 0",
+          let selectOptionsBaseStyle = {
             position: "absolute",
-            top: offsetHeight,
-            height: 200,
             width: "100%",
             overflowY: "scroll",
             background: "#fff",
@@ -64,13 +62,24 @@ class SelectOptions extends Component<IProps> {
               "0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.2)",
           };
 
+          if (!this.props.overFrameMenuPosition) {
+            selectOptionsBaseStyle = {
+              ...selectOptionsBaseStyle,
+              ...{
+                top: offsetHeight,
+              },
+            };
+          }
+
           return (
             <div
-              className={css(
-                selectOptions
+              className={css({
+                ...(selectOptions
                   ? selectOptions(selectOptionsBaseStyle)
-                  : selectOptionsBaseStyle
-              )}
+                  : selectOptionsBaseStyle),
+                height: 200,
+                margin: "4px 0",
+              })}
             >
               <Scrollbars ref={this.props.scrollbarsRef}>
                 {options.map((option, i) => (
