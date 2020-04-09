@@ -39,7 +39,11 @@ const InputForm = () => {
               onFocus={onFocus}
               onBlur={() => {
                 if (onChange) {
-                  if (!inputValue) {
+                  if (inputValue) {
+                    if (options[focusOptionMenuIndex].value !== inputValue) {
+                      onInputChange(null);
+                    }
+                  } else {
                     onChange(null);
                   }
                 }
