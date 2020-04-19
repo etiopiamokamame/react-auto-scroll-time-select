@@ -40,8 +40,14 @@ const InputForm = () => {
               onBlur={() => {
                 if (onChange) {
                   if (inputValue) {
-                    if (options[focusOptionMenuIndex].value !== inputValue) {
+                    const index = options.findIndex((options) =>
+                      findOption(options, inputValue)
+                    );
+                    if (index < 0) {
                       onInputChange(null);
+                      onChange(null);
+                    } else if (focusOptionMenuIndex === index) {
+                      onChange(options[index]);
                     }
                   } else {
                     onChange(null);
