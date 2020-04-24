@@ -4,6 +4,8 @@ A select box that supports typescript.
 You can select options that are separated by time.
 Automatically scrolls to choices that match the entered value.
 
+[Demo Site](https://etiopiamokamame.github.io/demo-react-auto-scroll-time-select/)
+
 ## Installation
 
 ```sh
