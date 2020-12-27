@@ -1,5 +1,4 @@
 import React from "react";
-import { css } from "emotion";
 import ClearValue from "../../atoms/ClearValue";
 import DropDownArrow from "../../atoms/DropDownArrow";
 import InputForm from "../../atoms/InputForm";
@@ -26,11 +25,7 @@ const Control = () => {
         };
 
         return (
-          <div
-            className={css(
-              control ? control(controlBaseStyle) : controlBaseStyle
-            )}
-          >
+          <div style={control ? control(controlBaseStyle) : controlBaseStyle}>
             <InputForm />
             <ClearValue />
             <DropDownArrow />

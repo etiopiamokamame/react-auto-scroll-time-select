@@ -1,5 +1,5 @@
-import { css } from "emotion";
-import React, { Component, createRef, RefObject } from "react";
+import React from "react";
+import { Component, createRef, RefObject } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import SelectContext from "./contexts/Select";
 import Control from "./components/molecules/Control";
@@ -105,14 +105,9 @@ class Select extends Component<IProps, IState> {
 
   render() {
     const candidates: number[] = Array.from({
-      length: this.state.hourLimit * 60,
+      length: this.state.hourLimit * 60 + 1,
     })
-      .map((_, i) => {
-        const h = Math.floor(i / 60);
-        const m = i - h * 60;
-
-        return m + h * 60;
-      })
+      .map((_, i) => i)
       .filter((n) => n % this.state.span === 0);
 
     const options: OptionType[] = candidates.map((candidate) => {
@@ -133,11 +128,11 @@ class Select extends Component<IProps, IState> {
 
     return (
       <div
-        className={css(
+        style={
           this.state.styles.select
             ? this.state.styles.select(selectBaseStyle)
             : selectBaseStyle
-        )}
+        }
         ref={this.selectControlRef}
       >
         <SelectContext.Provider

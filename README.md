@@ -9,7 +9,7 @@ Automatically scrolls to choices that match the entered value.
 ## Installation
 
 ```sh
-$ yarn add react-auto-scroll-time-select emotion react-custom-scrollbars @types/react-custom-scrollbars
+$ yarn add react-auto-scroll-time-select react-custom-scrollbars
 ```
 
 ## Usage
@@ -77,6 +77,7 @@ import React, { useState, useEffect } from "react";
 import Select, {
   OptionType,
   InputValueType,
+  StyleConfigType,
 } from "react-auto-scroll-time-select";
 
 const App = () => {
