@@ -1,5 +1,4 @@
 import React from "react";
-import { css } from "emotion";
 import SelectContext from "../../../contexts/Select";
 
 const DropDownArrow = () => {
@@ -36,18 +35,18 @@ const DropDownArrow = () => {
                 inputFormRef.current.focus();
               }
             }}
-            className={css(
+            style={
               dropDownArrowWrapper
                 ? dropDownArrowWrapper(dropDownArrowWrapperBaseStyle)
                 : dropDownArrowWrapperBaseStyle
-            )}
+            }
           >
             <div
-              className={css(
+              style={
                 dropDownArrowItem
                   ? dropDownArrowItem(dropDownArrowItemBaseStyle)
                   : dropDownArrowItemBaseStyle
-              )}
+              }
             />
           </div>
         );

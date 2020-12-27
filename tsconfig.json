@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2015",
-    "module": "commonjs",
+    "module": "es2015",
+    "moduleResolution": "node",
     "jsx": "react",
     "outDir": "./dist",
     "strict": true,

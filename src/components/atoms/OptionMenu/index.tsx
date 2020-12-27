@@ -1,5 +1,4 @@
 import React from "react";
-import { css } from "emotion";
 import SelectContext from "../../../contexts/Select";
 import { OptionType } from "../../../";
 
@@ -44,9 +43,9 @@ const OptionMenu = ({ option: { label, value }, index }: IProps) => {
                 onChange(option || options[0]);
               }
             }}
-            className={css(
+            style={
               optionMenu ? optionMenu(optionMenuBaseStyle) : optionMenuBaseStyle
-            )}
+            }
           >
             {label}
           </div>

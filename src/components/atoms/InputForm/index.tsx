@@ -1,10 +1,10 @@
-import React, { KeyboardEvent } from "react";
-import { css } from "emotion";
+import React from "react";
+import { KeyboardEvent } from "react";
 import Select from "../../../contexts/Select";
 
 const InputForm = () => {
   return (
-    <div className={css({ display: "table-cell", verticalAlign: "middle" })}>
+    <div style={{ display: "table-cell", verticalAlign: "middle" }}>
       <Select.Consumer>
         {({
           inputFormRef,
@@ -59,15 +59,15 @@ const InputForm = () => {
               onKeyUp={({ key }: KeyboardEvent<HTMLInputElement>) => {
                 switch (key) {
                   case "Escape":
-                    if (menuOpen) {
-                      onBlur();
-                    }
                   case "Enter":
                     if (onChange) {
                       onChange(options[focusOptionMenuIndex]);
                     }
                     onInputChange(options[focusOptionMenuIndex].label);
-                    onBlur();
+
+                    if (menuOpen) {
+                      onBlur();
+                    }
                     break;
                   case "ArrowDown":
                     if (options.length - 1 > focusOptionMenuIndex) {
@@ -97,9 +97,9 @@ const InputForm = () => {
                 }
               }}
               ref={inputFormRef}
-              className={css(
+              style={
                 inputForm ? inputForm(inputFormBaseStyle) : inputFormBaseStyle
-              )}
+              }
             />
           );
         }}
