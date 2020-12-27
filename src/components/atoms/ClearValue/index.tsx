@@ -1,5 +1,5 @@
 import React from "react";
-import { css } from "emotion";
+import { Fragment } from "react";
 import SelectContext from "../../../contexts/Select";
 
 const ClearValue = () => {
@@ -13,7 +13,7 @@ const ClearValue = () => {
         styles: { clearValue },
       }) => {
         if (!isClearable) {
-          return <></>;
+          return <Fragment></Fragment>;
         }
 
         const clearValueBaseStyle = {
@@ -36,9 +36,9 @@ const ClearValue = () => {
                 inputFormRef.current.select();
               }
             }}
-            className={css(
+            style={
               clearValue ? clearValue(clearValueBaseStyle) : clearValueBaseStyle
-            )}
+            }
           >
             ×
           </div>

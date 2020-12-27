@@ -1,5 +1,4 @@
 import React from "react";
-import { css } from "emotion";
 import { createPortal } from "react-dom";
 import SelectContext from "../../../contexts/Select";
 import SelectOptions from "../SelectOptions";
@@ -47,14 +46,14 @@ const SelectOptionsPortal = () => {
 
         return createPortal(
           <div
-            className={css({
+            style={{
               left,
               position: "absolute",
               top: positionTop,
               width,
               zIndex: 9999,
               boxSizing: "border-box",
-            })}
+            }}
           >
             <SelectOptions
               menuOpen={menuOpen}

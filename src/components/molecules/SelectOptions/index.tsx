@@ -1,5 +1,4 @@
 import React, { RefObject, Component } from "react";
-import { css } from "emotion";
 import { Scrollbars } from "react-custom-scrollbars";
 import SelectContext from "../../../contexts/Select";
 import OptionMenu from "../../atoms/OptionMenu";
@@ -73,13 +72,13 @@ class SelectOptions extends Component<IProps> {
 
           return (
             <div
-              className={css({
+              style={{
                 ...(selectOptions
                   ? selectOptions(selectOptionsBaseStyle)
                   : selectOptionsBaseStyle),
                 height: 200,
                 margin: "4px 0",
-              })}
+              }}
             >
               <Scrollbars ref={this.props.scrollbarsRef}>
                 {options.map((option, i) => (
