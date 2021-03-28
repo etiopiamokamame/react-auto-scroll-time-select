@@ -34,6 +34,7 @@ export interface IProps {
   isClearable?: boolean;
   styles?: StylesType;
   menuPortalTarget?: HTMLElement;
+  defaultScrollOptionValue?: string;
 }
 
 interface IState {
@@ -158,6 +159,7 @@ class Select extends Component<IProps, IState> {
             isClearable: this.state.isClearable,
             styles: this.state.styles,
             menuPortalTarget: this.props.menuPortalTarget,
+            defaultScrollOptionValue: this.props.defaultScrollOptionValue,
           }}
         >
           <Control />
@@ -173,6 +175,7 @@ class Select extends Component<IProps, IState> {
               focusOptionMenuIndex={this.state.focusOptionMenuIndex}
               options={options}
               findOption={this.state.findOption}
+              defaultScrollOptionValue={this.props.defaultScrollOptionValue}
               changeFocusOptionMenuIndex={(i: number) =>
                 this.setState({ focusOptionMenuIndex: i })
               }

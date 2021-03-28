@@ -30,16 +30,17 @@ import Select, { OptionType } from "react-auto-scroll-time-select";
 
 ## Props
 
-| Prop             | Default      | Type                                                 | Detail                                                      |
-| :--------------- | :----------- | :--------------------------------------------------- | :---------------------------------------------------------- |
-| span             | 30 (minutes) | number                                               | Choice time interval                                        |
-| hourLimit        | 24 (hours)   | number                                               | Limit time                                                  |
-| value            |              | OptionType &#124; null                               | The time you have selected                                  |
-| onChange         |              | (option: OptionType &#124; null) => void;            | Select change event                                         |
-| findOption       |              | (option: OptionType, input: InputValueType) => void; | An event that finds options to scroll from input characters |
-| isClearable      | true         | boolean                                              | If true, display the button to clear                        |
-| styles           |              | { select, control, ... }                             | See [Custom Style](#custom-styles)                          |
-| menuPortalTarget |              |                                                      | Element to add selection menu                               |
+| Prop                     | Default      | Type                                                 | Detail                                                      |
+| :----------------------- | :----------- | :--------------------------------------------------- | :---------------------------------------------------------- |
+| span                     | 30 (minutes) | number                                               | Choice time interval                                        |
+| hourLimit                | 24 (hours)   | number                                               | Limit time                                                  |
+| value                    |              | OptionType &#124; null                               | The time you have selected                                  |
+| onChange                 |              | (option: OptionType &#124; null) => void;            | Select change event                                         |
+| findOption               |              | (option: OptionType, input: InputValueType) => void; | An event that finds options to scroll from input characters |
+| isClearable              | true         | boolean                                              | If true, display the button to clear                        |
+| styles                   |              | { select, control, ... }                             | See [Custom Style](#custom-styles)                          |
+| menuPortalTarget         |              |                                                      | Element to add selection menu                               |
+| defaultScrollOptionValue |              | string                                               | Default display value                                       |
 
 ## Custom Styles
 
@@ -140,6 +141,7 @@ const App = () => {
         }),
       }}
       menuPortalTarget={document.body}
+      defaultScrollOptionValue="09:00"
     />
   );
 };

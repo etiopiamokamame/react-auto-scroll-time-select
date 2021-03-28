@@ -17,6 +17,7 @@ const SelectOptionsPortal = () => {
         changeFocusOptionMenuIndex,
         menuPortalTarget,
         selectControlRef,
+        defaultScrollOptionValue,
       }) => {
         if (!menuPortalTarget || !selectControlRef.current) {
           return <></>;
@@ -63,6 +64,7 @@ const SelectOptionsPortal = () => {
               focusOptionMenuIndex={focusOptionMenuIndex}
               options={options}
               findOption={findOption}
+              defaultScrollOptionValue={defaultScrollOptionValue}
               changeFocusOptionMenuIndex={changeFocusOptionMenuIndex}
               overFrameMenuPosition={overFrameMenuPosition}
             />
