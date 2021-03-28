@@ -19,6 +19,7 @@ const InputForm = () => {
           changeFocusOptionMenuIndex,
           findOption,
           styles: { inputForm },
+          defaultScrollOptionValue,
         }) => {
           const inputFormBaseStyle = {
             height: "calc(1.5em + .75rem + 2px)",
@@ -84,9 +85,19 @@ const InputForm = () => {
 
                     break;
                   default:
-                    const index = options.findIndex((options) =>
+                    let index = options.findIndex((options) =>
                       findOption(options, inputValue)
                     );
+
+                    if (
+                      defaultScrollOptionValue &&
+                      (index < 0 || !inputValue)
+                    ) {
+                      index = options.findIndex((options) =>
+                        findOption(options, defaultScrollOptionValue)
+                      );
+                    }
+
                     changeFocusOptionMenuIndex(index >= 0 ? index : 0);
 
                     break;
