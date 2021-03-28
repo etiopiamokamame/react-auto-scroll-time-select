@@ -21,6 +21,7 @@ interface IValueType {
   isClearable: boolean;
   styles: StylesType;
   menuPortalTarget: HTMLElement | undefined;
+  defaultScrollOptionValue: string | undefined;
 }
 
 const Select = createContext<IValueType>({
@@ -42,6 +43,7 @@ const Select = createContext<IValueType>({
   isClearable: true,
   styles: {},
   menuPortalTarget: undefined,
+  defaultScrollOptionValue: undefined,
 });
 
 export default Select;

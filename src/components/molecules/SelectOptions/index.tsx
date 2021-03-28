@@ -12,6 +12,7 @@ interface IProps {
   focusOptionMenuIndex: number;
   options: OptionType[];
   findOption: (option: OptionType, input: InputValueType) => void;
+  defaultScrollOptionValue: string | undefined;
   changeFocusOptionMenuIndex: (i: number) => void;
   overFrameMenuPosition?: boolean;
 }
@@ -26,9 +27,16 @@ class SelectOptions extends Component<IProps> {
 
   componentDidUpdate(prevProps: IProps) {
     if (!prevProps.menuOpen && this.props.menuOpen) {
-      const index = this.props.options.findIndex((option) =>
+      let index = this.props.options.findIndex((option) =>
         this.props.findOption(option, this.props.inputValue)
       );
+
+      if (prevProps.defaultScrollOptionValue && !this.props.inputValue) {
+        index = this.props.options.findIndex((option) =>
+          this.props.findOption(option, prevProps.defaultScrollOptionValue)
+        );
+      }
+
       this.props.changeFocusOptionMenuIndex(index >= 0 ? index : 0);
     }
 
