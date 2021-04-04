@@ -5,6 +5,7 @@
   "types": "./types/react-auto-scroll-time-select/index.d.ts",
   "files": [
     "dist",
+    "src",
     "types"
   ],
   "scripts": {
