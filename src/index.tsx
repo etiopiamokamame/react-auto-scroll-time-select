@@ -35,6 +35,7 @@ export interface IProps {
   styles?: StylesType;
   menuPortalTarget?: HTMLElement;
   defaultScrollOptionValue?: string;
+  hideOptions?: string[];
 }
 
 interface IState {
@@ -105,22 +106,25 @@ class Select extends Component<IProps, IState> {
   }
 
   render() {
+    const hideOptions = this.props.hideOptions || [];
     const candidates: number[] = Array.from({
       length: this.state.hourLimit * 60 + 1,
     })
       .map((_, i) => i)
       .filter((n) => n % this.state.span === 0);
 
-    const options: OptionType[] = candidates.map((candidate) => {
-      const h = Math.floor(candidate / 60);
-      const m = candidate - h * 60;
-      const option = `${this.format(h)}:${this.format(m)}`;
+    const options: OptionType[] = candidates
+      .map((candidate) => {
+        const h = Math.floor(candidate / 60);
+        const m = candidate - h * 60;
+        const option = `${this.format(h)}:${this.format(m)}`;
 
-      return {
-        label: option,
-        value: option,
-      };
-    });
+        return {
+          label: option,
+          value: option,
+        };
+      })
+      .filter(({ value }) => hideOptions.indexOf(value) < 0);
 
     const selectBaseStyle = {
       position: "relative",
