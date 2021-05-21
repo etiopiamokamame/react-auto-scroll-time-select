@@ -36,6 +36,7 @@ export interface IProps {
   menuPortalTarget?: HTMLElement;
   defaultScrollOptionValue?: string;
   hideOptions?: string[];
+  disabledOptions?: string[];
 }
 
 interface IState {
@@ -164,6 +165,7 @@ class Select extends Component<IProps, IState> {
             styles: this.state.styles,
             menuPortalTarget: this.props.menuPortalTarget,
             defaultScrollOptionValue: this.props.defaultScrollOptionValue,
+            disabledOptions: this.props.disabledOptions || [],
           }}
         >
           <Control />
