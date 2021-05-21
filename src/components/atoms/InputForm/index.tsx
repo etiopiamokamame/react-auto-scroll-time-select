@@ -23,6 +23,7 @@ const InputForm = () => {
         }) => {
           const inputFormBaseStyle = {
             height: "calc(1.5em + .75rem + 2px)",
+            minWidth: "100%",
             border: 0,
             paddingLeft: 10,
             width: 56,
