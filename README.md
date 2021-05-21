@@ -45,6 +45,7 @@ import Select, { OptionType } from "react-auto-scroll-time-select";
 | defaultScrollOptionValue |              | string                                               | Default display value                                       |
 | hideOptions              | []           | string[]                                             | Specify options to hide                                     |
 | disabledOptions          | []           | string[]                                             | Specify options to disabled                                 |
+| startTime                | 00:00        | string                                               | Specify the start time                                      |
 
 ## Custom Styles
 
@@ -146,8 +147,9 @@ const App = () => {
       }}
       menuPortalTarget={document.body}
       defaultScrollOptionValue="09:00"
-      hideOptions={["00:00"]}
-      disabledOptions={["01:00"]}
+      hideOptions={["01:30"]}
+      disabledOptions={["02:00"]}
+      startTime={"01:00"}
     />
   );
 };
