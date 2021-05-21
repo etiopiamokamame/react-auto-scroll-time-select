@@ -1,5 +1,7 @@
 # react-auto-scroll-time-select
 
+[![total](https://img.shields.io/npm/dt/react-auto-scroll-time-select.svg)](https://www.npmjs.com/package/react-auto-scroll-time-select) [![npm](https://img.shields.io/npm/v/react-auto-scroll-time-select.svg)](https://www.npmjs.com/package/react-auto-scroll-time-select)
+
 A select box that supports typescript.
 You can select options that are separated by time.
 Automatically scrolls to choices that match the entered value.
