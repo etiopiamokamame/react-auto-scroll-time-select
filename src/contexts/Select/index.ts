@@ -22,6 +22,7 @@ interface IValueType {
   styles: StylesType;
   menuPortalTarget: HTMLElement | undefined;
   defaultScrollOptionValue: string | undefined;
+  disabledOptions: string[];
 }
 
 const Select = createContext<IValueType>({
@@ -44,6 +45,7 @@ const Select = createContext<IValueType>({
   styles: {},
   menuPortalTarget: undefined,
   defaultScrollOptionValue: undefined,
+  disabledOptions: [],
 });
 
 export default Select;

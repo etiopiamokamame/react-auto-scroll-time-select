@@ -17,6 +17,7 @@ const OptionMenu = ({ option: { label, value }, index }: IProps) => {
         focusOptionMenuIndex,
         options,
         styles: { optionMenu },
+        disabledOptions,
       }) => {
         const optionMenuBaseStyle = {
           color: "#3c4043",
@@ -31,22 +32,30 @@ const OptionMenu = ({ option: { label, value }, index }: IProps) => {
           "&:hover": {
             backgroundColor: "#f1f3f4",
           },
+          "&[disabled]": {
+            color: "#cccccc",
+          },
         };
+
+        const isDisabled = disabledOptions.indexOf(value) >= 0;
 
         return (
           <div
             onMouseDown={() => {
-              onInputChange(value);
-              if (onChange) {
-                const option = options.find(
-                  ({ value: optVal }) => optVal === value
-                );
-                onChange(option || options[0]);
+              if (!isDisabled) {
+                onInputChange(value);
+                if (onChange) {
+                  const option = options.find(
+                    ({ value: optVal }) => optVal === value
+                  );
+                  onChange(option || options[0]);
+                }
               }
             }}
             className={css(
               optionMenu ? optionMenu(optionMenuBaseStyle) : optionMenuBaseStyle
             )}
+            {...{ disabled: isDisabled }}
           >
             {label}
           </div>
