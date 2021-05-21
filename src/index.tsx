@@ -36,6 +36,8 @@ export interface IProps {
   menuPortalTarget?: HTMLElement;
   defaultScrollOptionValue?: string;
   hideOptions?: string[];
+  disabledOptions?: string[];
+  startTime?: string;
 }
 
 interface IState {
@@ -106,13 +108,16 @@ class Select extends Component<IProps, IState> {
   }
 
   render() {
+    const startTime = this.props.startTime || "00:00";
+    const [startHour, startMin] = startTime.split(":");
+    const start = parseInt(startHour) * 60 + parseInt(startMin);
+
     const hideOptions = this.props.hideOptions || [];
     const candidates: number[] = Array.from({
       length: this.state.hourLimit * 60 + 1,
     })
       .map((_, i) => i)
-      .filter((n) => n % this.state.span === 0);
-
+      .filter((n) => n % this.state.span === 0 && n >= start);
     const options: OptionType[] = candidates
       .map((candidate) => {
         const h = Math.floor(candidate / 60);
@@ -164,6 +169,7 @@ class Select extends Component<IProps, IState> {
             styles: this.state.styles,
             menuPortalTarget: this.props.menuPortalTarget,
             defaultScrollOptionValue: this.props.defaultScrollOptionValue,
+            disabledOptions: this.props.disabledOptions || [],
           }}
         >
           <Control />

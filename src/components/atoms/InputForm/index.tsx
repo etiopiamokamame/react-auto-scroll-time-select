@@ -20,9 +20,11 @@ const InputForm = () => {
           findOption,
           styles: { inputForm },
           defaultScrollOptionValue,
+          disabledOptions,
         }) => {
           const inputFormBaseStyle = {
             height: "calc(1.5em + .75rem + 2px)",
+            minWidth: "100%",
             border: 0,
             paddingLeft: 10,
             width: 56,
@@ -37,6 +39,7 @@ const InputForm = () => {
               value={inputValue || ""}
               onChange={(e) => onInputChange(e.target.value)}
               maxLength={5}
+              onClick={onFocus}
               onFocus={onFocus}
               onBlur={() => {
                 if (onChange) {
@@ -61,26 +64,39 @@ const InputForm = () => {
                 switch (key) {
                   case "Escape":
                   case "Enter":
-                    if (onChange) {
-                      onChange(options[focusOptionMenuIndex]);
-                    }
-                    onInputChange(options[focusOptionMenuIndex].label);
+                    const inputOption = options[focusOptionMenuIndex];
 
-                    if (menuOpen) {
-                      onBlur();
+                    if (disabledOptions.indexOf(inputOption.value) < 0) {
+                      if (onChange) {
+                        onChange(options[focusOptionMenuIndex]);
+                      }
+
+                      onInputChange(inputOption.label);
+
+                      if (menuOpen) {
+                        onBlur();
+                      }
                     }
                     break;
                   case "ArrowDown":
                     if (options.length - 1 > focusOptionMenuIndex) {
                       changeFocusOptionMenuIndex(focusOptionMenuIndex + 1);
-                      onInputChange(options[focusOptionMenuIndex + 1].label);
+                      const inputOption = options[focusOptionMenuIndex + 1];
+
+                      if (disabledOptions.indexOf(inputOption.value) < 0) {
+                        onInputChange(inputOption.label);
+                      }
                     }
 
                     break;
                   case "ArrowUp":
                     if (focusOptionMenuIndex !== 0) {
                       changeFocusOptionMenuIndex(focusOptionMenuIndex - 1);
-                      onInputChange(options[focusOptionMenuIndex - 1].label);
+                      const inputOption = options[focusOptionMenuIndex - 1];
+
+                      if (disabledOptions.indexOf(inputOption.value) < 0) {
+                        onInputChange(inputOption.label);
+                      }
                     }
 
                     break;

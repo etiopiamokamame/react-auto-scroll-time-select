@@ -1,5 +1,7 @@
 # react-auto-scroll-time-select
 
+[![total](https://img.shields.io/npm/dt/react-auto-scroll-time-select.svg)](https://www.npmjs.com/package/react-auto-scroll-time-select) [![npm](https://img.shields.io/npm/v/react-auto-scroll-time-select.svg)](https://www.npmjs.com/package/react-auto-scroll-time-select)
+
 A select box that supports typescript.
 You can select options that are separated by time.
 Automatically scrolls to choices that match the entered value.
@@ -9,7 +11,7 @@ Automatically scrolls to choices that match the entered value.
 ## Installation
 
 ```sh
-$ yarn add react-auto-scroll-time-select react-custom-scrollbars
+$ yarn add react-auto-scroll-time-select react-custom-scrollbars @emotion/css
 ```
 
 ## Usage
@@ -42,6 +44,8 @@ import Select, { OptionType } from "react-auto-scroll-time-select";
 | menuPortalTarget         |              |                                                      | Element to add selection menu                               |
 | defaultScrollOptionValue |              | string                                               | Default display value                                       |
 | hideOptions              | []           | string[]                                             | Specify options to hide                                     |
+| disabledOptions          | []           | string[]                                             | Specify options to disabled                                 |
+| startTime                | 00:00        | string                                               | Specify the start time                                      |
 
 ## Custom Styles
 
@@ -143,7 +147,9 @@ const App = () => {
       }}
       menuPortalTarget={document.body}
       defaultScrollOptionValue="09:00"
-      hideOptions={["00:00"]}
+      hideOptions={["01:30"]}
+      disabledOptions={["02:00"]}
+      startTime={"01:00"}
     />
   );
 };
