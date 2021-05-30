@@ -84,7 +84,7 @@ class SelectOptions extends Component<IProps> {
                 ...(selectOptions
                   ? selectOptions(selectOptionsBaseStyle)
                   : selectOptionsBaseStyle),
-                height: 200,
+                height: options.length >= 5 ? 200 : options.length * 40,
                 margin: "4px 0",
               }}
             >
