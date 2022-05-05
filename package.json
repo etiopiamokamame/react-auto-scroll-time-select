@@ -1,6 +1,6 @@
 {
   "name": "react-auto-scroll-time-select",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
   "files": [
@@ -31,14 +31,19 @@
   "homepage": "https://github.com/etiopiamokamame/react-auto-scroll-time-select#readme",
   "description": "",
   "devDependencies": {
+    "@emotion/css": "^11.9.0",
+    "@types/react": "^18.0.8",
+    "@types/react-dom": "^18.0.3",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
     "ts-loader": "^9.2.8",
     "typescript": "^4.6.3"
   },
   "peerDependencies": {
+    "@emotion/css": "^11.9.0",
     "@types/react": "^18.0.6",
     "@types/react-dom": "^18.0.2",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "@emotion/css": "^11.9.0"
+    "react-dom": "^18.1.0"
   }
 }
