@@ -1,58 +1,46 @@
-import React from "react";
-import SelectContext from "../../../contexts/Select";
+import React, { memo } from "react";
+import { css, cx } from "@emotion/css";
+import {
+  dropDownArrowWrapperStyle,
+  dropDownArrowItemStyle,
+} from "../../../styles";
+import { StyleFn } from "../../../../types";
 
-const DropDownArrow = () => {
+interface Props {
+  dropDownArrowWrapperStyleFn?: StyleFn;
+  dropDownArrowItemStyleFn?: StyleFn;
+  openMenu: () => void;
+}
+
+const DropDownArrow = ({
+  dropDownArrowWrapperStyleFn,
+  dropDownArrowItemStyleFn,
+  openMenu,
+}: Props) => {
   return (
-    <SelectContext.Consumer>
-      {({
-        inputFormRef,
-        styles: { dropDownArrowWrapper, dropDownArrowItem },
-      }) => {
-        const dropDownArrowWrapperBaseStyle = {
-          width: 25,
-          display: "table-cell",
-          verticalAlign: "middle",
-          paddingRight: 5,
-          cursor: "pointer",
-          "&:hover > div": {
-            borderColor: "rgba(0,0,0,.5) transparent transparent",
-          },
-        };
-
-        const dropDownArrowItemBaseStyle = {
-          borderColor: "#999 transparent transparent",
-          borderStyle: "solid",
-          borderWidth: "5px 5px 2.5px",
-          margin: "0 auto",
-          width: 0,
-          display: "inline-block",
-        };
-
-        return (
-          <div
-            onClick={() => {
-              if (inputFormRef.current) {
-                inputFormRef.current.focus();
-              }
-            }}
-            style={
-              dropDownArrowWrapper
-                ? dropDownArrowWrapper(dropDownArrowWrapperBaseStyle)
-                : dropDownArrowWrapperBaseStyle
-            }
-          >
-            <div
-              style={
-                dropDownArrowItem
-                  ? dropDownArrowItem(dropDownArrowItemBaseStyle)
-                  : dropDownArrowItemBaseStyle
-              }
-            />
-          </div>
-        );
-      }}
-    </SelectContext.Consumer>
+    <div
+      className={cx(
+        "react-auto-scroll-time-select__drop-down-arrow-wrapper",
+        css(
+          dropDownArrowWrapperStyleFn
+            ? dropDownArrowWrapperStyleFn(dropDownArrowWrapperStyle)
+            : dropDownArrowWrapperStyle
+        )
+      )}
+      onClick={openMenu}
+    >
+      <div
+        className={cx(
+          "react-auto-scroll-time-select__drop-down-arrow-item",
+          css(
+            dropDownArrowItemStyleFn
+              ? dropDownArrowItemStyleFn(dropDownArrowItemStyle)
+              : dropDownArrowItemStyle
+          )
+        )}
+      />
+    </div>
   );
 };
 
-export default DropDownArrow;
+export default memo(DropDownArrow);

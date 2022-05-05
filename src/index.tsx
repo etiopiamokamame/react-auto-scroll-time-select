@@ -1,200 +1,129 @@
-import React from "react";
-import { Component, createRef, RefObject } from "react";
-import { Scrollbars } from "react-custom-scrollbars";
-import SelectContext from "./contexts/Select";
-import Control from "./components/molecules/Control";
+import React, { HTMLAttributes, useCallback, useRef } from "react";
+import { css, cx } from "@emotion/css";
+import SelectOptionsFrame from "./components/templates/SelectOptionsFrame";
 import SelectOptions from "./components/molecules/SelectOptions";
-import SelectOptionsPortal from "./components/molecules/SelectOptionsPortal";
+import InputForm from "./components/atoms/InputForm";
+import ClearValue from "./components/atoms/ClearValue";
+import DropDownArrow from "./components/atoms/DropDownArrow";
+import { useStore } from "./stores";
+import { selectStyle, controlStyle } from "./styles";
+import { SelectProps } from "../types";
 
-export type OptionType = {
-  label: string;
-  value: string;
-};
+type Props = SelectProps & HTMLAttributes<HTMLDivElement>;
 
-export type InputValueType = string | null | undefined;
-export type StyleConfigType = { [key: string]: any };
-type StyleFn = (config: StyleConfigType) => {};
-export type StylesType = {
-  select?: StyleFn;
-  control?: StyleFn;
-  inputForm?: StyleFn;
-  clearValue?: StyleFn;
-  dropDownArrowWrapper?: StyleFn;
-  dropDownArrowItem?: StyleFn;
-  selectOptions?: StyleFn;
-  optionMenu?: StyleFn;
-};
+const App = ({
+  value,
+  onChange,
+  span,
+  hourLimit,
+  findOption,
+  isClearable,
+  defaultScrollOptionValue,
+  hideOptions,
+  disabledOptions,
+  startTime,
+  menuPortalTarget,
+  styles,
+  ...props
+}: Props) => {
+  const selectProps: SelectProps = {
+    value,
+    onChange,
+    span,
+    hourLimit,
+    findOption,
+    isClearable,
+    defaultScrollOptionValue,
+    hideOptions,
+    disabledOptions,
+    startTime,
+    menuPortalTarget,
+    styles,
+  };
 
-export interface IProps {
-  span?: number;
-  hourLimit?: number;
-  value?: OptionType | null;
-  onChange?: (option: OptionType | null) => void;
-  findOption?: (option: OptionType, input: InputValueType) => void;
-  isClearable?: boolean;
-  styles?: StylesType;
-  menuPortalTarget?: HTMLElement;
-  defaultScrollOptionValue?: string;
-  hideOptions?: string[];
-  disabledOptions?: string[];
-  startTime?: string;
-}
+  const {
+    state,
+    changeInputValue,
+    changeFocusOptionMenuIndex,
+    openMenu,
+    closeMenu,
+    selectedOption,
+    clearValue,
+  } = useStore(selectProps);
 
-interface IState {
-  hourLimit: number;
-  span: number;
-  inputValue: string | undefined | null;
-  menuOpen: boolean;
-  focusOptionMenuIndex: number;
-  findOption: (option: OptionType, input: InputValueType) => void;
-  isClearable: boolean;
-  styles: StylesType;
-}
+  const selectControlRef = useRef<HTMLDivElement>(null);
 
-class Select extends Component<IProps, IState> {
-  selectControlRef = createRef<HTMLDivElement>();
-  inputFormRef = createRef<HTMLInputElement>();
-  scrollbarsRef: RefObject<Scrollbars> = createRef<Scrollbars>();
-
-  constructor(props: IProps) {
-    super(props);
-
-    this.state = {
-      hourLimit: props.hourLimit || 24,
-      span: props.span || 30,
-      inputValue: props.value ? props.value.value : "",
-      menuOpen: false,
-      focusOptionMenuIndex: 0,
-      findOption:
-        props.findOption ||
-        (({ value }: OptionType, input: InputValueType) => {
-          let inputValue = input || "";
-
-          if (inputValue.indexOf(":") < 0) {
-            if (inputValue.length <= 2) {
-              return value.indexOf(inputValue + ":") > -1;
-            } else {
-              return value.replace(":", "").indexOf(inputValue) > -1;
-            }
-          } else {
-            return value.indexOf(inputValue) > -1;
-          }
-        }),
-      isClearable: props.isClearable === undefined ? true : props.isClearable,
-      styles: props.styles || {},
-    };
-  }
-
-  componentDidUpdate(prevProps: IProps) {
-    if (
-      prevProps.value !== this.props.value ||
-      (prevProps.value &&
-        this.props.value &&
-        (prevProps.value.label !== this.props.value.label ||
-          prevProps.value.value !== this.props.value.value)) ||
-      prevProps.hourLimit !== this.props.hourLimit ||
-      prevProps.span !== this.props.span
-    ) {
-      this.setState({
-        inputValue: this.props.value ? this.props.value.value : null,
-        hourLimit: this.props.hourLimit || this.state.hourLimit,
-        span: this.props.span || this.state.span,
-      });
-    }
-  }
-
-  private format(num: number) {
-    return ("0" + num).slice(-2);
-  }
-
-  render() {
-    const startTime = this.props.startTime || "00:00";
-    const [startHour, startMin] = startTime.split(":");
-    const start = parseInt(startHour) * 60 + parseInt(startMin);
-
-    const hideOptions = this.props.hideOptions || [];
-    const candidates: number[] = Array.from({
-      length: this.state.hourLimit * 60 + 1,
-    })
-      .map((_, i) => i)
-      .filter((n) => n % this.state.span === 0 && n >= start);
-    const options: OptionType[] = candidates
-      .map((candidate) => {
-        const h = Math.floor(candidate / 60);
-        const m = candidate - h * 60;
-        const option = `${this.format(h)}:${this.format(m)}`;
-
-        return {
-          label: option,
-          value: option,
-        };
-      })
-      .filter(({ value }) => hideOptions.indexOf(value) < 0);
-
-    const selectBaseStyle = {
-      position: "relative",
-      "*": { boxSizing: "border-box" },
-    };
-
-    return (
+  return (
+    <div
+      {...props}
+      className={cx(
+        "react-auto-scroll-time-select__select",
+        css(
+          state.styles?.select ? state.styles.select(selectStyle) : selectStyle
+        )
+      )}
+      ref={selectControlRef}
+    >
       <div
-        style={
-          this.state.styles.select
-            ? this.state.styles.select(selectBaseStyle)
-            : selectBaseStyle
-        }
-        ref={this.selectControlRef}
+        className={cx(
+          "react-auto-scroll-time-select__control",
+          css(
+            state.styles?.control
+              ? state.styles.control(controlStyle)
+              : controlStyle
+          )
+        )}
       >
-        <SelectContext.Provider
-          value={{
-            clearInputValue: () => this.setState({ inputValue: null }),
-            onInputChange: (inputValue) => this.setState({ inputValue }),
-            onFocus: () => this.setState({ menuOpen: true }),
-            onBlur: () => this.setState({ menuOpen: false }),
-            onChange: this.props.onChange,
-            inputValue: this.state.inputValue,
-            menuOpen: this.state.menuOpen,
-            selectControlRef: this.selectControlRef,
-            offsetHeight: this.selectControlRef.current
-              ? this.selectControlRef.current.offsetHeight
-              : 0,
-            inputFormRef: this.inputFormRef,
-            scrollbarsRef: this.scrollbarsRef,
-            options,
-            focusOptionMenuIndex: this.state.focusOptionMenuIndex,
-            changeFocusOptionMenuIndex: (i: number) =>
-              this.setState({ focusOptionMenuIndex: i }),
-            findOption: this.state.findOption,
-            isClearable: this.state.isClearable,
-            styles: this.state.styles,
-            menuPortalTarget: this.props.menuPortalTarget,
-            defaultScrollOptionValue: this.props.defaultScrollOptionValue,
-            disabledOptions: this.props.disabledOptions || [],
-          }}
-        >
-          <Control />
-
-          {this.props.menuPortalTarget ? (
-            <SelectOptionsPortal />
-          ) : (
-            <SelectOptions
-              menuOpen={this.state.menuOpen}
-              inputValue={this.state.inputValue}
-              scrollbarsRef={this.scrollbarsRef}
-              inputFormRef={this.inputFormRef}
-              focusOptionMenuIndex={this.state.focusOptionMenuIndex}
-              options={options}
-              findOption={this.state.findOption}
-              defaultScrollOptionValue={this.props.defaultScrollOptionValue}
-              changeFocusOptionMenuIndex={(i: number) =>
-                this.setState({ focusOptionMenuIndex: i })
-              }
-            />
-          )}
-        </SelectContext.Provider>
+        <InputForm
+          inputFormStyleFn={state.styles?.inputForm}
+          menuOpen={state.menuOpen}
+          inputValue={state.inputValue}
+          changeInputValue={changeInputValue}
+          selectedOption={() =>
+            selectedOption(state.options[state.focusOptionMenuIndex])
+          }
+          incrementFocusOptionMenuIndex={() =>
+            changeFocusOptionMenuIndex(state.focusOptionMenuIndex + 1)
+          }
+          decrementFocusOptionMenuIndex={() =>
+            changeFocusOptionMenuIndex(state.focusOptionMenuIndex - 1)
+          }
+          openMenu={useCallback(openMenu, [])}
+          closeMenu={useCallback(closeMenu, [
+            state.inputValue,
+            state.focusOptionMenuIndex,
+          ])}
+        />
+        <ClearValue
+          isClearable={state.isClearable}
+          clearValueStyleFn={state.styles?.clearValue}
+          clearValue={useCallback(clearValue, [])}
+        />
+        <DropDownArrow
+          dropDownArrowWrapperStyleFn={state.styles?.dropDownArrowWrapper}
+          dropDownArrowItemStyleFn={state.styles?.dropDownArrowItem}
+          openMenu={useCallback(openMenu, [])}
+        />
       </div>
-    );
-  }
-}
 
-export default Select;
+      {state.menuOpen && (
+        <SelectOptionsFrame
+          menuPortalTarget={state.menuPortalTarget}
+          selectControlRef={selectControlRef}
+          optionLength={state.options.length}
+        >
+          <SelectOptions
+            selectOptionsStyleFn={state.styles?.selectOptions}
+            optionMenuStyleFn={state.styles?.optionMenu}
+            options={state.options}
+            focusOptionMenuIndex={state.focusOptionMenuIndex}
+            selectedOption={selectedOption}
+            disabledOptions={state.disabledOptions}
+          />
+        </SelectOptionsFrame>
+      )}
+    </div>
+  );
+};
+
+export default App;

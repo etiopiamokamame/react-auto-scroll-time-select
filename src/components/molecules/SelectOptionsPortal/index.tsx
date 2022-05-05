@@ -1,78 +1,60 @@
-import React from "react";
+import React, { ReactChild, RefObject } from "react";
 import { createPortal } from "react-dom";
-import SelectContext from "../../../contexts/Select";
-import SelectOptions from "../SelectOptions";
+import { css, cx } from "@emotion/css";
+import {
+  defaultOptionMenuHeight,
+  defaultOptionMenuCount,
+  selectOptionsPortalStyle,
+} from "../../../styles";
 
-const SelectOptionsPortal = () => {
-  return (
-    <SelectContext.Consumer>
-      {({
-        menuOpen,
-        inputValue,
-        scrollbarsRef,
-        inputFormRef,
-        focusOptionMenuIndex,
-        options,
-        findOption,
-        changeFocusOptionMenuIndex,
-        menuPortalTarget,
-        selectControlRef,
-        defaultScrollOptionValue,
-      }) => {
-        if (!menuPortalTarget || !selectControlRef.current) {
-          return <></>;
-        }
+interface Props {
+  children: ReactChild;
+  menuPortalTarget: HTMLElement;
+  selectControlRef: RefObject<HTMLDivElement>;
+  optionLength: number;
+}
 
-        let overFrameMenuPosition = false;
+const SelectOptionsPortal = ({
+  children,
+  menuPortalTarget,
+  selectControlRef,
+  optionLength,
+}: Props) => {
+  if (!selectControlRef.current) return <></>;
 
-        const {
-          left,
-          top,
+  const {
+    width,
+    top,
+    left,
+    bottom: selectControlBottom,
+  } = selectControlRef.current.getBoundingClientRect();
+  const { bottom: menuPortalBottom } = menuPortalTarget.getBoundingClientRect();
+
+  const scrollContentHeight =
+    optionLength >= defaultOptionMenuCount
+      ? defaultOptionMenuHeight * defaultOptionMenuCount
+      : optionLength * defaultOptionMenuHeight;
+  let positionTop = top;
+
+  if (menuPortalBottom < selectControlBottom + scrollContentHeight) {
+    positionTop -= scrollContentHeight + defaultOptionMenuHeight + 8;
+  }
+
+  return createPortal(
+    <div
+      className={cx(
+        "react-auto-scroll-time-select__select-options-portal",
+        css({
+          ...selectOptionsPortalStyle,
           width,
-          bottom: selectControlBottom,
-        } = selectControlRef.current.getBoundingClientRect();
-        let positionTop = top;
-
-        if (menuOpen && menuPortalTarget && inputFormRef.current) {
-          const scrollbarHeight = 200 + 8;
-          const {
-            bottom: menuPortalBottom,
-          } = menuPortalTarget.getBoundingClientRect();
-
-          if (menuPortalBottom < selectControlBottom + scrollbarHeight) {
-            positionTop -= scrollbarHeight;
-            overFrameMenuPosition = true;
-          }
-        }
-
-        return createPortal(
-          <div
-            style={{
-              left,
-              position: "absolute",
-              top: positionTop,
-              width,
-              zIndex: 9999,
-              boxSizing: "border-box",
-            }}
-          >
-            <SelectOptions
-              menuOpen={menuOpen}
-              inputValue={inputValue}
-              scrollbarsRef={scrollbarsRef}
-              inputFormRef={inputFormRef}
-              focusOptionMenuIndex={focusOptionMenuIndex}
-              options={options}
-              findOption={findOption}
-              defaultScrollOptionValue={defaultScrollOptionValue}
-              changeFocusOptionMenuIndex={changeFocusOptionMenuIndex}
-              overFrameMenuPosition={overFrameMenuPosition}
-            />
-          </div>,
-          menuPortalTarget
-        );
-      }}
-    </SelectContext.Consumer>
+          top: positionTop,
+          left,
+        })
+      )}
+    >
+      {children}
+    </div>,
+    menuPortalTarget
   );
 };
 
