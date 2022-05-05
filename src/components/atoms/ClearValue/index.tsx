@@ -1,51 +1,32 @@
-import React from "react";
-import { Fragment } from "react";
-import SelectContext from "../../../contexts/Select";
+import React, { memo } from "react";
+import { css, cx } from "@emotion/css";
+import { clearValueStyle } from "../../../styles";
+import { StyleFn } from "../../../../types";
 
-const ClearValue = () => {
+interface Props {
+  isClearable: boolean;
+  clearValueStyleFn?: StyleFn;
+  clearValue: () => void;
+}
+
+const ClearValue = ({ isClearable, clearValueStyleFn, clearValue }: Props) => {
+  if (!isClearable) return <></>;
+
   return (
-    <SelectContext.Consumer>
-      {({
-        clearInputValue,
-        inputFormRef,
-        changeFocusOptionMenuIndex,
-        isClearable,
-        styles: { clearValue },
-      }) => {
-        if (!isClearable) {
-          return <Fragment></Fragment>;
-        }
-
-        const clearValueBaseStyle = {
-          width: 17,
-          display: "table-cell",
-          verticalAlign: "middle",
-          cursor: "pointer",
-          "&:hover": {
-            color: "rgba(0,0,0,.5)",
-          },
-        };
-
-        return (
-          <div
-            onClick={() => {
-              changeFocusOptionMenuIndex(0);
-              clearInputValue();
-              if (inputFormRef.current) {
-                inputFormRef.current.focus();
-                inputFormRef.current.select();
-              }
-            }}
-            style={
-              clearValue ? clearValue(clearValueBaseStyle) : clearValueBaseStyle
-            }
-          >
-            ×
-          </div>
-        );
-      }}
-    </SelectContext.Consumer>
+    <div
+      className={cx(
+        "react-auto-scroll-time-select__clear-value",
+        css(
+          clearValueStyleFn
+            ? clearValueStyleFn(clearValueStyle)
+            : clearValueStyle
+        )
+      )}
+      onClick={clearValue}
+    >
+      ×
+    </div>
   );
 };
 
-export default ClearValue;
+export default memo(ClearValue);

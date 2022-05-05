@@ -1,68 +1,41 @@
-import React from "react";
-import { css } from "@emotion/css";
-import SelectContext from "../../../contexts/Select";
-import { OptionType } from "../../../";
+import React, { memo } from "react";
+import { OptionType } from "../../../../types";
 
-interface IProps {
+interface Props {
+  className: string;
   option: OptionType;
-  index: number;
+  isFocused: boolean;
+  selectedOption: (option: OptionType) => void;
+  isDisabled: boolean;
 }
 
-const OptionMenu = ({ option: { label, value }, index }: IProps) => {
+const OptionMenu = ({
+  className,
+  option,
+  isFocused,
+  selectedOption,
+  isDisabled,
+}: Props) => {
+  const additionalProps = {
+    focus: isFocused ? "" : undefined,
+    disabled: isDisabled,
+  };
+
   return (
-    <SelectContext.Consumer>
-      {({
-        onInputChange,
-        onChange,
-        focusOptionMenuIndex,
-        options,
-        styles: { optionMenu },
-        disabledOptions,
-      }) => {
-        const optionMenuBaseStyle = {
-          color: "#3c4043",
-          padding: "0 15px",
-          height: 40,
-          display: "flex",
-          alignItems: "center",
-          cursor: "pointer",
-          fontSize: "1rem",
-          backgroundColor:
-            index == focusOptionMenuIndex ? "#f1f3f4" : "inherit",
-          "&:hover": {
-            backgroundColor: "#f1f3f4",
-          },
-          "&[disabled]": {
-            color: "#cccccc",
-          },
-        };
-
-        const isDisabled = disabledOptions.indexOf(value) >= 0;
-
-        return (
-          <div
-            onMouseDown={() => {
-              if (!isDisabled) {
-                onInputChange(value);
-                if (onChange) {
-                  const option = options.find(
-                    ({ value: optVal }) => optVal === value
-                  );
-                  onChange(option || options[0]);
-                }
-              }
-            }}
-            className={css(
-              optionMenu ? optionMenu(optionMenuBaseStyle) : optionMenuBaseStyle
-            )}
-            {...{ disabled: isDisabled }}
-          >
-            {label}
-          </div>
-        );
+    <div
+      className={className}
+      onMouseDown={(e) => {
+        if (isDisabled) {
+          e.preventDefault();
+        } else {
+          selectedOption(option);
+        }
       }}
-    </SelectContext.Consumer>
+      {...additionalProps}
+    >
+      {option.label}
+    </div>
   );
 };
 
-export default OptionMenu;
+export default memo(OptionMenu);
