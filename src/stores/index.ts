@@ -94,7 +94,7 @@ export function useStore(selectProps: SelectProps): Store {
   useEffect(() => {
     if (isInitialMount.current.onChange) {
       isInitialMount.current.onChange = false;
-    } else if (state.onChange) {
+    } else if (state.onChange && selectProps.value !== state.value) {
       state.onChange(state.value);
     }
   }, [state.value?.value]);
