@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { reducer } from "./reducers";
 import { generateOptions, defaultFindOption } from "../utils";
 import { Store, SelectProps, InputValueType, OptionType } from "../../types";
@@ -80,11 +80,24 @@ export function useStore(selectProps: SelectProps): Store {
 
   const [state, dispatch] = useReducer(reducer, initState);
 
+  const isInitialMount = useRef({
+    onChange: true,
+    span: true,
+    hourLimit: true,
+    findOption: true,
+    isClearable: true,
+    hideOptions: true,
+    disabledOptions: true,
+    startTime: true,
+  });
+
   useEffect(() => {
-    if (state.onChange) {
+    if (isInitialMount.current.onChange) {
+      isInitialMount.current.onChange = false;
+    } else if (state.onChange) {
       state.onChange(state.value);
     }
-  }, [state.value]);
+  }, [state.value?.value]);
 
   useEffect(() => {
     if (selectProps.value != state.value) {
@@ -93,7 +106,9 @@ export function useStore(selectProps: SelectProps): Store {
   }, [selectProps.value]);
 
   useEffect(() => {
-    if (selectProps.span !== state.span) {
+    if (isInitialMount.current.span) {
+      isInitialMount.current.span = false;
+    } else if (selectProps.span !== state.span) {
       dispatch({
         type: "update-span",
         span: selectProps.span || initialState.span,
@@ -102,7 +117,9 @@ export function useStore(selectProps: SelectProps): Store {
   }, [selectProps.span]);
 
   useEffect(() => {
-    if (selectProps.hourLimit !== state.hourLimit) {
+    if (isInitialMount.current.hourLimit) {
+      isInitialMount.current.hourLimit = false;
+    } else if (selectProps.hourLimit !== state.hourLimit) {
       dispatch({
         type: "update-hour-limit",
         hourLimit: selectProps.hourLimit || initialState.hourLimit,
@@ -111,7 +128,9 @@ export function useStore(selectProps: SelectProps): Store {
   }, [selectProps.hourLimit]);
 
   useEffect(() => {
-    if (
+    if (isInitialMount.current.findOption) {
+      isInitialMount.current.findOption = false;
+    } else if (
       (selectProps.findOption || "").toString() !== state.findOption.toString()
     ) {
       dispatch({
@@ -122,7 +141,9 @@ export function useStore(selectProps: SelectProps): Store {
   }, [selectProps.findOption]);
 
   useEffect(() => {
-    if (selectProps.isClearable !== state.isClearable) {
+    if (isInitialMount.current.isClearable) {
+      isInitialMount.current.isClearable = false;
+    } else if (selectProps.isClearable !== state.isClearable) {
       dispatch({
         type: "update-is-clearable",
         isClearable:
@@ -145,7 +166,9 @@ export function useStore(selectProps: SelectProps): Store {
   }, [selectProps.defaultScrollOptionValue]);
 
   useEffect(() => {
-    if (selectProps.hideOptions !== state.hideOptions) {
+    if (isInitialMount.current.hideOptions) {
+      isInitialMount.current.hideOptions = false;
+    } else if (selectProps.hideOptions !== state.hideOptions) {
       dispatch({
         type: "update-hide-options",
         hideOptions: selectProps.hideOptions || [],
@@ -154,7 +177,9 @@ export function useStore(selectProps: SelectProps): Store {
   }, [selectProps.hideOptions]);
 
   useEffect(() => {
-    if (selectProps.disabledOptions !== state.disabledOptions) {
+    if (isInitialMount.current.disabledOptions) {
+      isInitialMount.current.disabledOptions = false;
+    } else if (selectProps.disabledOptions !== state.disabledOptions) {
       dispatch({
         type: "update-disabled-options",
         disabledOptions: selectProps.disabledOptions || [],
@@ -163,7 +188,9 @@ export function useStore(selectProps: SelectProps): Store {
   }, [selectProps.disabledOptions]);
 
   useEffect(() => {
-    if (selectProps.startTime !== state.startTime) {
+    if (isInitialMount.current.startTime) {
+      isInitialMount.current.startTime = false;
+    } else if (selectProps.startTime !== state.startTime) {
       dispatch({
         type: "update-start-time",
         startTime: selectProps.startTime || initialState.startTime,
