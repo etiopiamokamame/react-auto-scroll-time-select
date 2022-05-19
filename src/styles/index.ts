@@ -31,6 +31,7 @@ export const inputFormStyle: StyleConfigType = {
   fontSize: "1rem",
   flex: "auto",
   borderRadius: "inherit",
+  minWidth: 0,
 };
 
 export const clearValueStyle: StyleConfigType = {

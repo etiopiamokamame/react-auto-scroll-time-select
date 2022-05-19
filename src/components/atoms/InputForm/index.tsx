@@ -72,9 +72,15 @@ const InputForm = ({
       type="text"
       value={inputValue || ""}
       maxLength={5}
-      onClick={openMenu}
-      onFocus={openMenu}
-      onBlur={closeMenu}
+      onClick={() => {
+        if (!menuOpen) openMenu();
+      }}
+      onFocus={() => {
+        if (!menuOpen) openMenu();
+      }}
+      onBlur={() => {
+        if (menuOpen) closeMenu();
+      }}
       onChange={onChange}
       onKeyUp={onKeyUp}
     />
