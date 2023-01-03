@@ -116,6 +116,13 @@ export default {
     };
   },
 
+  updateOnChange: (state: Store.State, onChange: (option: OptionType | null) => void | undefined) => {
+    return {
+      ...state,
+      onChange
+    }
+  },
+
   updateSpan: (state: Store.State, span: number) => {
     const [startHour, startMin] = state.startTime.split(":");
     const start = parseInt(startHour) * 60 + parseInt(startMin);
