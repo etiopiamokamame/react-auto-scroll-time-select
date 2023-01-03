@@ -32,6 +32,7 @@ export namespace Store {
     | SelectedOptionAction
     | ClearValueAction
     | UpdateValueAction
+    | UpdateOnChangeAction
     | UpdateSpanAction
     | UpdateHourLimitAction
     | UpdateFindOptionAction
@@ -71,6 +72,11 @@ export namespace Store {
   interface UpdateValueAction {
     type: "update-value";
     value: OptionType | null;
+  }
+
+  interface UpdateOnChangeAction {
+    type: "update-on-change"
+    onChange: (option: OptionType | null) => void | undefined
   }
 
   interface UpdateSpanAction {

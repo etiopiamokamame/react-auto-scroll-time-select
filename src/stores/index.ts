@@ -81,6 +81,7 @@ export function useStore(selectProps: SelectProps): Store {
   const [state, dispatch] = useReducer(reducer, initState);
 
   const isInitialMount = useRef({
+    value: true,
     onChange: true,
     span: true,
     hourLimit: true,
@@ -92,18 +93,29 @@ export function useStore(selectProps: SelectProps): Store {
   });
 
   useEffect(() => {
-    if (isInitialMount.current.onChange) {
-      isInitialMount.current.onChange = false;
+    if (selectProps.value != state.value) {
+      dispatch({ type: "update-value", value: selectProps.value || null });
+    }
+  }, [selectProps.value]);
+
+  useEffect(() => {
+    if (isInitialMount.current.value) {
+      isInitialMount.current.value = false;
     } else if (state.onChange && selectProps.value !== state.value) {
       state.onChange(state.value);
     }
   }, [state.value?.value]);
 
   useEffect(() => {
-    if (selectProps.value != state.value) {
-      dispatch({ type: "update-value", value: selectProps.value || null });
+    if (isInitialMount.current.onChange) {
+      isInitialMount.current.onChange = false;
+    } else {
+      dispatch({
+        type: "update-on-change",
+        onChange: selectProps.onChange,
+      });
     }
-  }, [selectProps.value]);
+  }, [selectProps.onChange])
 
   useEffect(() => {
     if (isInitialMount.current.span) {
@@ -130,9 +142,7 @@ export function useStore(selectProps: SelectProps): Store {
   useEffect(() => {
     if (isInitialMount.current.findOption) {
       isInitialMount.current.findOption = false;
-    } else if (
-      (selectProps.findOption || "").toString() !== state.findOption.toString()
-    ) {
+    } else {
       dispatch({
         type: "update-find-option",
         findOption: selectProps.findOption || initialState.findOption,
