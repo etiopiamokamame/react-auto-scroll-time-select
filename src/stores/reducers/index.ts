@@ -20,6 +20,8 @@ export const reducer = (state: Store.State, action: Store.Action) => {
       return Action.clearValue(state);
     case "update-value":
       return Action.updateValue(state, action.value);
+    case "update-on-change":
+      return Action.updateOnChange(state, action.onChange);
     case "update-span":
       return Action.updateSpan(state, action.span);
     case "update-hour-limit":
